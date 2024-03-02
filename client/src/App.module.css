@@ -1,0 +1,15 @@
+* {
+    --green: rgb(190, 255, 190)
+}
+
+.App {
+    display: flex;
+}
+
+.tehnical_bar {
+    position: fixed;
+    left: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

@@ -1,0 +1,57 @@
+.buttons button {
+    --width-button: 200px;
+    --height-button: 40px
+}
+#checkbox_district, #checkbox_street, #checkbox_city, #checkbox_name {
+    cursor: pointer;
+}
+
+.main {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.configurations {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%
+}
+.configurations label {
+    cursor: pointer;
+}
+.configurations div{
+    margin: 10px
+}
+.configurations_checkbox {
+    background-color: rgb(190, 255, 190);
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+}
+.buttons button {
+    margin: 10px;
+    height: var(--height-button);
+    width: var(--width-button);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.5s;
+    background-color: var(--green);
+}
+.buttons button:hover {
+    background-color: rgb(234, 255, 234);
+}
+
+.buttons .buttons_disabled {
+    height: 0;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 0;
+    margin: 0 10px
+}
+
+.buttons .buttons_active {
+    height: var(--height-button);
+    width: var(--width-button)
+}
