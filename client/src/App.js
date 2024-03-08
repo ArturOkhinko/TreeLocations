@@ -14,8 +14,6 @@ function App() {
           <HierarchyConfiguration/>
           <CityInfo isOpen={isOpen} city={modalWindowProps.city} residents={modalWindowProps.residents} name={modalWindowProps.name} setIsOpen={setIsOpen}/>
       </div>
-      
-   
     </div>
   );
 }

@@ -43,8 +43,8 @@ export default function HierarchyConfiguration() {
             <div><input type="checkbox" id={style.checkbox_name} className={style.configurations_checkbox} name={"name"}  onChange={e => chooseElement(e)}/><label htmlFor={style.checkbox_name}>Имя</label></div>
         </div>
         <div className={style.buttons}>
-            <button onClick={() => changeConfiguration()} className={needReduildTree ? style.buttons_disabled : style.buttons_active}>Изменить иерархию</button>
-            <button onClick={() => rebuildTree()} className={needReduildTree ? style.buttons_active : style.buttons_disabled}>Вернуть</button>
+            <button onClick={changeConfiguration} className={needReduildTree ? style.buttons_disabled : style.buttons_active}>Изменить иерархию</button>
+            <button onClick={rebuildTree} className={needReduildTree ? style.buttons_active : style.buttons_disabled}>Вернуть</button>
         </div>
     </div>
   )

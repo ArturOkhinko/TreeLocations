@@ -9,9 +9,21 @@ class TreeModule {
     #findGroup (location, groupType) {
         return location.groups.find((group) => group.type === groupType)
     }
+    #createElement (type, name, innerHTML, city_id) {
+        const div = document.createElement("div")
+        div.name = name
+        div.type = type
+        div.innerHTML = innerHTML ? innerHTML : name
+        if(city_id) {
+            div.city_id = city_id
+        }
+        return div
+    }
     #openModalWindow (setIsOpen, setModalWindowProps, citiesInfo, DOMElement, name) {
         setIsOpen(true)
-        citiesInfo.forEach((city) => city.id === Number(DOMElement.cityId) && setModalWindowProps({city: city.name, residents: city.data, name: name}))
+        citiesInfo.forEach((city) => {
+            city.id === Number(DOMElement.city_id) && setModalWindowProps({city: city.name, residents: city.data, name: name})
+        })
     }
 
     buildTree (locations = this.#locations, currentNode = this.#currentNode, setIsOpen = this.#setIsOpen, setModalWindowProps = this.#setModalWindowProps, citiesInfo = this.#citiesInfo) {
@@ -21,68 +33,43 @@ class TreeModule {
         this.#setModalWindowProps = setModalWindowProps
         this.#citiesInfo = citiesInfo
         currentNode.innerHTML = ""
+        currentNode.name = "currentNode"
+
         var prioritySystem = {country: 5, city: 4, district: 3, street: 2, home: 1}
         var groupsType = []
         groupsType = locations[0].groups.map((group) => group.type)
         groupsType = groupsType.sort((a,b) => prioritySystem[b] - prioritySystem[a])
 
-        var groupMaxPriority = locations[0].groups.reduce((acc, group) => {
-            if(prioritySystem[group] > prioritySystem[acc]) {
-                return group
-            }
-            return acc
-        })
-        var div = document.createElement("div")
-        div.priority = prioritySystem[groupMaxPriority.type]
-        div.name = groupMaxPriority.name
-        div.type = groupMaxPriority.type
-        div.id = locations[0].city_id
-        div.innerHTML = groupMaxPriority.name
-        currentNode.append(div)
-        
         locations.forEach((location) => {
             var i = 0
-            var node = currentNode
-            var group = this.#findGroup(location, groupsType[i])
-            while (i <= groupsType.length) {
+            var build = (node) => {
+
+                var groupLocation = this.#findGroup(location, groupsType[i])
+        
+                if(i === groupsType.length) {
+                    var div = this.#createElement(location.type, location.name, location.name, location.id)
+                    div.onclick = (e) => this.#openModalWindow(this.#setIsOpen, this.#setModalWindowProps, this.#citiesInfo, e.target, location.name)
+                    div.style = "cursor:pointer"
+                    node.append(div)
+                    return
+                }
+
                 var isNode = false
                 for(var child of node.childNodes) {
-                    if(group && group.name === child.name) {
-                        node = child
-                        i++
-                        group = this.#findGroup(location, groupsType[i])
+                    if(child.name === groupLocation.name) {
                         isNode = true
-                        break
-                    }
-                    if(group === undefined && child.name === location.name) {
                         i++
-                        isNode = true
-                        break
+                        build(child)
                     }
-                    
                 }
                 if(isNode === false) {
-                    if(group === undefined) {
-                        var divFinal = document.createElement("div")
-                        divFinal.name = location.name
-                        divFinal.type = "name"
-                        divFinal.cityId = location.id
-                        divFinal.innerHTML = location.name
-                        divFinal.style = "cursor:pointer"
-                        divFinal.onclick = (e) => this.#openModalWindow(setIsOpen, setModalWindowProps, citiesInfo, e.target , location.name )
-                        node.append(divFinal)
-                        break
-                    } 
-                    var div = document.createElement('div')
-                    div.name = group.name
-                    div.type = group.type
-                    div.innerHTML = group.name
+                    var div = this.#createElement(groupLocation.type, groupLocation.name)
                     node.append(div)
-                    node = div
                     i++
-                    group = this.#findGroup(location, groupsType[i])
+                    build(div)
                 }
             }
+            build(this.#currentNode)
         })
     }
 
@@ -105,7 +92,6 @@ class TreeModule {
                     child.remove()
                     removeLayers(parent)
                 }
-
                 removeLayers(child)
             });
         }

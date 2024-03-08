@@ -4,7 +4,7 @@ const Location = new Schema({
     "id": Number,
     "name": String,
     "city_id": Number,
-    "groups": Array
+    "groups": {type: Schema.Types.ObjectId, ref: "Groups"}
 })
 
 module.exports = model("Location", Location)
