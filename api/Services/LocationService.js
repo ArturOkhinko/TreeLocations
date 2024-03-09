@@ -1,5 +1,4 @@
 const ApiError = require("../Api-err/Api-error")
-const DBController = require("../DBController/DBController")
 const City = require("../models/City")
 const Groups = require("../models/Groups")
 const Location = require("../models/Location")
